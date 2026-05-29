@@ -1,0 +1,17 @@
+name: Keep Supabase PCI
+
+on:
+  schedule:
+    # Run at midnight (0 0 * *) on Sunday (0) and Friday(5)
+    - cron: '0 0 * * 0,5'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase PCI Database
+        run: |
+          curl -X GET "${{ secrets.SUPABASE_URL_PCI }}/rest/v1/keep_alive?select=id&limit=1" \
+          -H "apikey: ${{ secrets.SUPABASE_KEY_PCI }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY_PCI }}"
